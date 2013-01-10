@@ -1,8 +1,0 @@
-<directory name="ca-certificates-mozilla" rev="18" srcmd5="021d612d15e16679e99c590ed6c565b6" vrev="2">
-  <entry md5="a6ddf1ff0d70f73d47233e70a16b9075" mtime="1336048881" name="ca-certificates-mozilla.COPYING" size="15207" />
-  <entry md5="b12fc84ac257bf50d2b509b2964815e1" mtime="1357240808" name="ca-certificates-mozilla.changes" size="5942" />
-  <entry md5="1a457e4c1de7848aa20400735a9c2f5b" mtime="1357240808" name="ca-certificates-mozilla.spec" size="3161" />
-  <entry md5="3eb8b780f5bcce60bee40f66b9ad23c4" mtime="1357240809" name="certdata.txt" size="1306494" />
-  <entry md5="87f167d627da08aa3b40fd832f29bf51" mtime="1336048881" name="compareoldnew" size="1062" />
-  <entry md5="89fb2df2a2f95d160f9dc34b21096a9a" mtime="1314690881" name="extractcerts.pl" size="6708" />
-</directory>
