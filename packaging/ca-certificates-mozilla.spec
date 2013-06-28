@@ -42,6 +42,7 @@ Source:         certdata.txt
 Source1:        extractcerts.pl
 Source2:        %{name}.COPYING
 Source3:        compareoldnew
+Source1001: 	ca-certificates-mozilla.manifest
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 # for update-ca-certificates
@@ -59,6 +60,7 @@ from MozillaFirefox
 
 %prep
 %setup -qcT
+cp %{SOURCE1001} .
 /bin/cp %{SOURCE0} .
 install -m 644 %{S:1} COPYING
 
@@ -99,6 +101,7 @@ update-ca-certificates || true
 update-ca-certificates || true
 
 %files
+%manifest %{name}.manifest
 %defattr(-, root, root)
 %doc COPYING
 %{sslusrdir}/mozilla
