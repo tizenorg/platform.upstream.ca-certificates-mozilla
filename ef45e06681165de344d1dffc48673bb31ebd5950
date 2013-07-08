@@ -1,0 +1,8 @@
+Change-Id: Ief45e06681165de344d1dffc48673bb31ebd5950
+Code-Review+2: Ryan Ware <ware@linux.intel.com>
+Verified+1: Ryan Ware <ware@linux.intel.com>
+Submitted-by: Ryan Ware <ware@linux.intel.com>
+Submitted-at: Mon, 08 Jul 2013 10:06:03 -0700
+Reviewed-on: https://review.tizen.org/gerrit/4623
+Project: platform/upstream/ca-certificates-mozilla
+Branch: refs/heads/tizen
