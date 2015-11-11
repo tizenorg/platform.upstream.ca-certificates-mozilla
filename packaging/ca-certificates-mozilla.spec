@@ -70,7 +70,7 @@ if [ "%{version}" != "$ver" ]; then
 	false
 fi
 
-%define trustdir_static %{TZ_SYS_SHARE}/ca-certificates/mozilla
+%define trustdir_static %{TZ_SYS_SHARE}/ca-certificates/certs
 
 %build
 python %{SOURCE10}
@@ -109,6 +109,17 @@ for i in *.crt; do
 done
 for i in *.p11-kit ; do
 	install -m 644 "$i" "%{buildroot}/%{trustdir_static}"
+done
+
+for i in %{buildroot}/%{trustdir_static}/*.pem; do
+	subject_hash=`openssl x509 -in "$i" -noout -subject_hash`
+	suffix=0
+	new_fname="%{buildroot}/%{trustdir_static}/$subject_hash"
+	while [ -e "$new_fname.$suffix" ]; do
+		suffix=$((suffix+1))
+	done
+	new_fname="$new_fname.$suffix"
+	mv "$i" "$new_fname"
 done
 set -x
 
