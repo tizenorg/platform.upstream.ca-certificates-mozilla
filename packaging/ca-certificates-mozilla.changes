@@ -1,3 +1,353 @@
-* Thu Jan 10 2013 Anas Nashif <anas.nashif@intel.com> 5dd22b5
-- Initial import
+-------------------------------------------------------------------
+Wed Jan 14 09:40:00 UTC 2015 - meissner@suse.com
+
+- diff-from-upstream-2.2.patch:
+  Temporary reenable some root ca trusts, as openssl/gnutls
+  have trouble using intermediates as root CA.
+
+  - GTE CyberTrust Global Root
+  - Thawte Server CA
+  - Thawte Premium Server CA
+  - ValiCert Class 1 VA
+  - ValiCert Class 2 VA
+  - RSA Root Certificate 1
+  - Entrust.net Secure Server CA
+  - America Online Root Certification Authority 1
+  - America Online Root Certification Authority 2
+
+-------------------------------------------------------------------
+Mon Jan 12 16:45:23 UTC 2015 - meissner@suse.com
+
+- Updated to 2.2 (bnc#888534)
+  - The following CAs were removed:
+    + America_Online_Root_Certification_Authority_1
+    + America_Online_Root_Certification_Authority_2
+    + GTE_CyberTrust_Global_Root
+    + Thawte_Premium_Server_CA
+    + Thawte_Server_CA
+  - The following CAs were added:
+    + COMODO_RSA_Certification_Authority
+      codeSigning emailProtection serverAuth
+    + GlobalSign_ECC_Root_CA_-_R4
+      codeSigning emailProtection serverAuth
+    + GlobalSign_ECC_Root_CA_-_R5
+      codeSigning emailProtection serverAuth
+    + USERTrust_ECC_Certification_Authority
+      codeSigning emailProtection serverAuth
+    + USERTrust_RSA_Certification_Authority
+      codeSigning emailProtection serverAuth
+    + VeriSign-C3SSA-G2-temporary-intermediate-after-1024bit-removal
+  - The following CAs were changed:
+    + Equifax_Secure_eBusiness_CA_1
+      remote code signing and https trust, leave email trust
+    + Verisign_Class_3_Public_Primary_Certification_Authority_-_G2
+      only trust emailProtection
+
+-------------------------------------------------------------------
+Tue Aug 26 13:30:12 UTC 2014 - meissner@suse.com
+
+- Updated to 2.1 (bnc#888534)
+
+- The following 1024-bit CA certificates were removed
+  - Entrust.net Secure Server Certification Authority
+  - ValiCert Class 1 Policy Validation Authority
+  - ValiCert Class 2 Policy Validation Authority
+  - ValiCert Class 3 Policy Validation Authority
+  - TDC Internet Root CA
+- The following CA certificates were added:
+  - Certification Authority of WoSign
+  - CA 沃通根证书
+  - DigiCert Assured ID Root G2
+  - DigiCert Assured ID Root G3
+  - DigiCert Global Root G2
+  - DigiCert Global Root G3
+  - DigiCert Trusted Root G4
+  - QuoVadis Root CA 1 G3
+  - QuoVadis Root CA 2 G3
+  - QuoVadis Root CA 3 G3
+- The Trust Bits were changed for the following CA certificates
+  - Class 3 Public Primary Certification Authority
+  - Class 3 Public Primary Certification Authority
+  - Class 2 Public Primary Certification Authority - G2
+  - VeriSign Class 2 Public Primary Certification Authority - G3
+  - AC Raíz Certicámara S.A.
+  - NetLock Uzleti (Class B) Tanusitvanykiado
+  - NetLock Expressz (Class C) Tanusitvanykiado
+
+- certdata-temporary-1024.patch: restore some certificates removed
+  from NSS as these are still used for some major sites.
+  openssl is not as clever as NSS in selecting the new ones in the
+  chain correctly.
+
+-------------------------------------------------------------------
+Wed Jun 18 15:05:23 UTC 2014 - meissner@suse.com
+
+- do not provide openssl-certs, just obsolete it.
+
+-------------------------------------------------------------------
+Tue Jun 10 12:52:29 UTC 2014 - meissner@suse.com
+
+- in sle11 we bumped openssl-certs version to match the NSS version,
+  so provide/obsolete the current version.
+
+-------------------------------------------------------------------
+Wed Jun  4 08:21:33 UTC 2014 - lnussel@suse.de
+
+- updated certificates to revision 1.97 (bnc#881241)
+  new: "Atos TrustedRoot 2011" (codeSigning emailProtection serverAuth)
+  new: "Tugra Certification Authority" (codeSigning serverAuth)
+  removed: "Firmaprofesional Root CA"
+  removed: "TDC OCES Root CA"
+  new: "TeliaSonera Root CA v1" (emailProtection serverAuth)
+  new: "T-TeleSec GlobalRoot Class 2" (emailProtection serverAuth)
+
+-------------------------------------------------------------------
+Fri Feb 21 16:18:35 UTC 2014 - meissner@suse.com
+
+- updated certificates to revision 1.96 (bnc#865080)
+  new:     ACCVRAIZ1.pem   (Spain) (all trusts)
+  new:     SG_TRUST_SERVICES_RACINE.pem (Singapore) (email signing only)
+  new:     TWCA_Global_Root_CA.pem (Taiwanese) (all trusts)
+  removed: Wells_Fargo_Root_CA.pem
+
+-------------------------------------------------------------------
+Mon Dec  9 16:01:29 UTC 2013 - meissner@suse.com
+
+- Updated to 1.95
+  Distrust a sub-ca that issued google.com certificates.
+  "Distrusted AC DG Tresor SSL" (bnc#854367)
+
+-------------------------------------------------------------------
+Mon Dec  9 09:56:32 UTC 2013 - lnussel@suse.de
+
+- fix handling of certificates with same name (bnc#854163)
+
+-------------------------------------------------------------------
+Tue Oct 29 13:52:16 UTC 2013 - meissner@suse.com
+
+- Updated to 1.94
+  * new: CA_Disig_Root_R1:2.9.0.195.3.154.238.80.144.110.40.crt
+    server auth, code signing, email signing
+  * new: CA_Disig_Root_R2:2.9.0.146.184.136.219.176.138.193.99.crt
+    server auth, code signing, email signing
+  * new: China_Internet_Network_Information_Center_EV_Certificates_Root:2.4.72.159.0.1.crt
+    server auth
+  * changed: Digital_Signature_Trust_Co._Global_CA_1:2.4.54.112.21.150.crt
+    removed code signing and server auth abilities
+  * changed: Digital_Signature_Trust_Co._Global_CA_3:2.4.54.110.211.206.crt
+    removed code signing and server auth abilities
+  * new: D-TRUST_Root_Class_3_CA_2_2009:2.3.9.131.243.crt
+    server auth
+  * new: D-TRUST_Root_Class_3_CA_2_EV_2009:2.3.9.131.244.crt
+    server auth
+  * removed: Entrust.net_Premium_2048_Secure_Server_CA:2.4.56.99.185.102.crt
+  * new:     Entrust.net_Premium_2048_Secure_Server_CA:2.4.56.99.222.248.crt
+    I think the missing flags were adjusted.
+  * removed: Equifax_Secure_eBusiness_CA_2:2.4.55.112.207.181.crt
+  * new: PSCProcert:2.1.11.crt
+    server auth, code signing, email signing
+  * new: Swisscom_Root_CA_2:2.16.30.158.40.232.72.242.229.239.195.124.74.30.90.24.103.182.crt
+    server auth, code signing, email signing
+  * new: Swisscom_Root_EV_CA_2:2.17.0.242.250.100.226.116.99.211.141.253.16.29.4.31.118.202.88.crt
+    server auth, code signing
+  * changed: TC_TrustCenter_Universal_CA_III:2.14.99.37.0.1.0.2.20.141.51.21.2.228.108.244.crt
+    removed all abilities
+  * new: TURKTRUST_Certificate_Services_Provider_Root_2007:2.1.1.crt
+    server auth, code signing
+  * changed: TWCA_Root_Certification_Authority:2.1.1.crt
+    added code signing ability
+- removed temporary Entrust.net_Premium_2048_Secure_Server_CA.p11-kit override.
+
+-------------------------------------------------------------------
+Mon Aug 19 13:07:07 UTC 2013 - lnussel@suse.de
+
+- update Entrust root attributes to new format used by p11-kit
+
+-------------------------------------------------------------------
+Wed Jul 24 15:05:31 UTC 2013 - lnussel@suse.de
+
+- remove superfluous double quotes from certificate names
+
+-------------------------------------------------------------------
+Wed Jul 24 14:21:18 UTC 2013 - lnussel@suse.de
+
+- add fake basic contraints to Entrust root so p11-kit export the cert
+  (bnc#829471)
+- add nssckbi.h that matches certdata.txt; make sure package has the
+  correct version number which is currently 1.93. No actual content
+  change in certdata.txt compared to 1.85, it's just that the
+  versioning scheme changed.
+
+-------------------------------------------------------------------
+Thu Jun 27 16:03:05 UTC 2013 - lnussel@suse.de
+
+- use certdata2pem.py from Fedora to extract all certs
+
+-------------------------------------------------------------------
+Fri Jun 21 12:59:53 UTC 2013 - lnussel@suse.de
+
+- use correct 'anchors' subdirectory
+
+-------------------------------------------------------------------
+Wed Jun 19 09:30:00 UTC 2013 - lnussel@suse.de
+
+- new location of CA certificate anchors is
+  /usr/share/ca-certificates/anchors
+
+-------------------------------------------------------------------
+Thu Jan  3 19:16:01 UTC 2013 - idonmez@suse.com
+
+- update certificates to revision 1.87 (bnc#796628)
+  * new "EE Certification Centre Root CA"
+  * new "T-TeleSec GlobalRoot Class 3"
+  * revoke mis-issued intermediate CAs from TURKTRUST
+
+-------------------------------------------------------------------
+Wed Oct 10 14:50:00 UTC 2012 - meissner@suse.com
+
+- updated certificates to revision 1.85 (bnc#783509)
+  * new "Actalis Authentication Root CA"
+  * new "Trustis FPS Root CA"
+  * new "StartCom Certification Authority"
+  * new "StartCom Certification Authority G2"
+  * new "Buypass Class 2 Root CA"
+  * new "Buypass Class 3 Root CA"
+  * updated: "Sonera Class2 CA": remove code-signing
+  * updated: "thawte Primary Root CA": added code-signing
+  * updated: "Trustis_FPS_Root_CA.pem": added code-signing
+  * updated: VeriSign Class 3 Public Primary Certification Authority - G5":
+    added code-signing, email-protection
+
+-------------------------------------------------------------------
+Thu May  3 12:13:20 UTC 2012 - lnussel@suse.de
+
+- update certificates to revision 1.83 (bnc#760503)
+  * new: EC_ACC.pem
+  * new: Hellenic_Academic_and_Research_Institutions_RootCA_2011.pem
+  * new: Security_Communication_RootCA2.pem
+  * removed: TC_TrustCenter_Germany_Class_2_CA.pem
+  * removed: TC_TrustCenter_Germany_Class_3_CA.pem
+  * removed: Verisign_Class_1_Public_Primary_Certification_Authority.1.pem
+  * removed: Verisign_Class_2_Public_Primary_Certification_Authority.pem
+  * removed: Verisign_Class_4_Public_Primary_Certification_Authority_G2.pem
+- license change to MPL-2.0
+
+-------------------------------------------------------------------
+Fri Jan 13 08:52:29 UTC 2012 - cfarrell@suse.com
+
+- license update: MPL-1.1 or GPL-2.0+ or LGPL-2.1+
+  SPDX format and correct GPL and LGPL tags to include or later
+
+-------------------------------------------------------------------
+Thu Jan 12 11:30:31 UTC 2012 - coolo@suse.com
+
+- change license to be in spdx.org format
+
+-------------------------------------------------------------------
+Sat Sep 17 21:58:34 UTC 2011 - jengelh@medozas.de
+
+- Remove redundant tags/sections from specfile
+
+-------------------------------------------------------------------
+Wed Aug 31 09:02:10 UTC 2011 - lnussel@suse.de
+
+- update certificates to revision 1.76
+  * new: Go_Daddy_Root_Certificate_Authority_G2.pem
+  * new: Starfield_Root_Certificate_Authority_G2.pem
+  * new: Starfield_Services_Root_Certificate_Authority_G2.pem
+  * new: AffirmTrust_Commercial.pem
+  * new: AffirmTrust_Networking.pem
+  * new: AffirmTrust_Premium.pem
+  * new: AffirmTrust_Premium_ECC.pem
+  * new: Certum_Trusted_Network_CA.pem
+  * new: Certinomis_Autorit_Racine.pem
+  * new: Root_CA_Generalitat_Valenciana.pem
+  * new: A_Trust_nQual_03.pem
+  * new: TWCA_Root_Certification_Authority.pem
+  * removed: DigiNotar_Root_CA.pem (bnc#714931)
+
+-------------------------------------------------------------------
+Mon Jan 31 13:43:23 UTC 2011 - lnussel@suse.de
+
+- update certificates to revision 1.70
+  * new: AddTrust_Qualified_Certificates_Root.pem
+  * new: Autoridad_de_Certificacion_Firmaprofesional_CIF_A62634068.pem
+  * new: Chambers_of_Commerce_Root_2008.pem
+  * new: Global_Chambersign_Root_2008.pem
+  * new: Izenpe_com.pem
+  * new: TC_TrustCenter_Universal_CA_III.pem
+
+-------------------------------------------------------------------
+Mon Sep 27 14:27:52 UTC 2010 - lnussel@suse.de
+
+- update certificates to revision 1.65
+  * new: E_Guven_Kok_Elektronik_Sertifika_Hizmet_Saglayicisi.pem
+  * new: GlobalSign_Root_CA_R3.pem
+  * new: Microsec_e_Szigno_Root_CA_2009.pem
+  * new: Verisign_Class_1_Public_Primary_Certification_Authority.1.pem
+  * new: Verisign_Class_3_Public_Primary_Certification_Authority.1.pem
+
+-------------------------------------------------------------------
+Fri May 21 12:30:01 UTC 2010 - lnussel@suse.de
+
+- update certificates to revision 1.64
+  * removed "RSA Security 1024 V3" certificate
+
+-------------------------------------------------------------------
+Thu Apr  8 09:24:37 UTC 2010 - lnussel@suse.de
+
+- require ca-certificates also for postun
+
+-------------------------------------------------------------------
+Thu Apr  1 12:14:11 UTC 2010 - lnussel@suse.de
+
+- don't output trusted certs by default as it's not supported by
+  gnutls yet and pidgin scans /etc/ssl/certs
+
+-------------------------------------------------------------------
+Thu Apr  1 11:39:01 UTC 2010 - lnussel@suse.de
+
+- update certificates to revision 1.62
+
+-------------------------------------------------------------------
+Fri Mar 26 15:27:34 UTC 2010 - lnussel@suse.de
+
+- extract trustbits as comment as Fedora does
+- convert to trusted certificates in spec file instead
+
+-------------------------------------------------------------------
+Thu Mar 25 08:16:56 UTC 2010 - lnussel@suse.de
+
+- rename to ca-certificates-mozilla
+- output trusted certificates
+- use utf8 in file names
+
+-------------------------------------------------------------------
+Tue Feb  2 16:27:35 UTC 2010 - lnussel@suse.de
+
+- update certificates to revision 1.57
+- add script to compare with previous certificates
+
+-------------------------------------------------------------------
+Wed Sep 30 13:17:45 UTC 2009 - lnussel@suse.de
+
+- update certifiates to cvs revision 1.56
+- exclude certficates that are not trusted for identifying web sites
+
+-------------------------------------------------------------------
+Tue Dec  2 11:29:03 CET 2008 - cfarrell@suse.de
+
+- Add openssl-certs.COPYING to fix bnc#441356
+ 
+
+-------------------------------------------------------------------
+Thu Oct  9 17:49:57 CEST 2008 - lnussel@suse.de
+
+- use certificates from MozillaFirefox
+
+-------------------------------------------------------------------
+Wed Jul  9 15:15:38 CEST 2008 - mkoenig@suse.de
+
+- split out the CA root certificates from the openssl certs 
+  subpackage into a package of its own. 
 

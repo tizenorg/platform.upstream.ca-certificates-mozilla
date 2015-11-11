@@ -8,22 +8,23 @@ cleanup()
 showcert()
 {
 	openssl x509 -in "$1" -noout -subject -fingerprint -nameopt multiline,utf8,-esc_msb \
-	| sed -ne 's/ *commonName *= /   CN: /p; s/.*Fingerprint=/ sha1: /p'
+	| sed -ne 's/ *commonName *= /  CN=/p; s/.*Fingerprint=/  sha1=/p'
+	sed -ne '/^# \(openssl\|distrust\|alias\)/s/^#/ /p' < "$1"
 }
 cleanup
 trap cleanup EXIT
 mkdir old new
 cd old
 echo old...
-VERBOSE=1 ../extractcerts.pl --trustbits < ../.osc/certdata.txt > tmp
-sort < tmp > ../old.files
-rm -f tmp
+ln -s ../.osc/certdata.txt
+python ../certdata2pem.py > stdout 2> stderr
+ls -1 *.crt | sort > ../old.files
 cd ..
 cd new
 echo new...
-VERBOSE=1 ../extractcerts.pl --trustbits < ../certdata.txt > tmp
-sort < tmp > ../new.files
-rm -f tmp
+ln -s ../certdata.txt
+python ../certdata2pem.py > stdout 2> stderr
+ls -1 *.crt | sort > ../new.files
 cd ..
 echo '----------------------------'
 while read line; do
@@ -32,13 +33,13 @@ while read line; do
 	new="$2"
 	common="$3"
 	if [ -n "$old" ]; then
-		echo "! removed: $old"
+		echo "- $old"
 		showcert old/$old
 	elif [ -n "$new" ]; then
-		echo "! new: $new"
+		echo "+ $new"
 		showcert new/$new
 	elif ! cmp "old/$common" "new/$common"; then
-		echo "! diff: $common"
+		echo "~ $common"
 		showcert old/$common
 		showcert new/$common
 		diff -u old/$common new/$common || true
