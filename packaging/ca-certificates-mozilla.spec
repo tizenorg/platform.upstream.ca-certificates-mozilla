@@ -49,6 +49,7 @@ BuildRequires:  openssl
 BuildRequires:  ca-certificates
 BuildRequires:  python
 BuildRequires:  pkgconfig(libtzplatform-config)
+BuildRequires:  ca-certificates-devel
 # for update-ca-certificates
 Requires(post):    ca-certificates
 Requires(postun):  ca-certificates
@@ -70,7 +71,7 @@ if [ "%{version}" != "$ver" ]; then
 	false
 fi
 
-%define trustdir_static %{TZ_SYS_SHARE}/ca-certificates/certs
+%define trustdir_static %{TZ_SYS_CA_CERTS_ORIG}
 
 %build
 python %{SOURCE10}
