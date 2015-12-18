@@ -50,9 +50,7 @@ BuildRequires:  ca-certificates
 BuildRequires:  python
 BuildRequires:  pkgconfig(libtzplatform-config)
 BuildRequires:  ca-certificates-devel
-# for update-ca-certificates
-Requires(post):    ca-certificates
-Requires(postun):  ca-certificates
+Requires:       ca-certificates
 
 %description
 This package contains some CA root certificates for OpenSSL extracted
@@ -112,27 +110,28 @@ for i in *.p11-kit ; do
 	install -m 644 "$i" "%{buildroot}/%{trustdir_static}"
 done
 
-for i in %{buildroot}/%{trustdir_static}/*.pem; do
+mkdir -p %buildroot%TZ_SYS_CA_CERTS
+mkdir -p %buildroot/var/lib/ca-certificates
+rm -f %buildroot%TZ_SYS_CA_BUNDLE_RW
+touch %buildroot%TZ_SYS_CA_BUNDLE_RW
+for i in %buildroot%trustdir_static/*.pem; do
 	subject_hash=`openssl x509 -in "$i" -noout -subject_hash`
 	suffix=0
-	new_fname="%{buildroot}/%{trustdir_static}/$subject_hash"
-	while [ -e "$new_fname.$suffix" ]; do
+	while [ -e "%buildroot%trustdir_static/$subject_hash.$suffix" ]; do
 		suffix=$((suffix+1))
 	done
-	new_fname="$new_fname.$suffix"
-	mv "$i" "$new_fname"
+	fname="$subject_hash.$suffix"
+	mv "$i" "%buildroot%trustdir_static/$fname"
+	ln -sf "%trustdir_static/$fname" "%buildroot%TZ_SYS_CA_CERTS/$fname"
+	openssl x509 -in %buildroot%trustdir_static/$fname >> %buildroot%TZ_SYS_CA_BUNDLE_RW
 done
 set -x
-
-%post
-update-ca-certificates || true
-
-%postun
-update-ca-certificates || true
 
 %files
 %manifest %{name}.manifest
 %license COPYING
 %{trustdir_static}
+%TZ_SYS_CA_CERTS/*
+%attr(775, root, system) %TZ_SYS_CA_BUNDLE_RW
 
 %changelog

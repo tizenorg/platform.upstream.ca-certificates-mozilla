@@ -1,5 +1,9 @@
 <manifest>
- <request>
-    <domain name="_"/>
- </request>
+	<request>
+		<domain name="_" />
+	</request>
+	<assign>
+		<filesystem path="/etc/ssl/certs/*" label="System::Shared" />
+		<filesystem path="/var/lib/ca-certificates/ca-bundle.pem" label="System::Shared" />
+	</assign>
 </manifest>
